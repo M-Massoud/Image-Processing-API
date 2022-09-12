@@ -1,0 +1,5 @@
+# Ignore artifacts:
+
+tsconfig.json
+dist
+node_modules

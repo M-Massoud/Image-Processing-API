@@ -4,10 +4,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
+var morgan_1 = __importDefault(require("morgan"));
+var routes_1 = __importDefault(require("./routes"));
+var sharp_1 = __importDefault(require("./middlewares/sharp"));
 var server = (0, express_1.default)();
-server.get('/', function (req, res) {
-    res.send('yes it works perfectly!');
-});
+server.use((0, morgan_1.default)('tiny'));
+server.use(routes_1.default);
+server.use(sharp_1.default);
+// server.get('/', (req, res) => {
+//   res.send('yes it works perfectly!');
+// });
 var port = 3001;
 server.listen(port, function () {
     console.log("server currently listening on port ".concat(port));

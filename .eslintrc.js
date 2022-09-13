@@ -20,7 +20,7 @@ module.exports = {
   ignorePatterns: ['dist'],
 
   rules: {
-    'prettier/prettier': 1,
+    // 'prettier/prettier': 'warn',
     'no-var': 'warn',
   },
 };

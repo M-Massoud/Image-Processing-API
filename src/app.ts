@@ -1,7 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import router from './routes';
-import resizeImage from './middlewares/sharp';
+// import resizeImage from './middlewares/sharp';
 
 const server = express();
 
@@ -9,7 +9,7 @@ server.use(morgan('tiny'));
 
 server.use(router);
 
-server.use(resizeImage);
+// server.use(resizeImage);
 // server.get('/', (req, res) => {
 //   res.send('yes it works perfectly!');
 // });

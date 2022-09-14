@@ -6,11 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var morgan_1 = __importDefault(require("morgan"));
 var routes_1 = __importDefault(require("./routes"));
-var sharp_1 = __importDefault(require("./middlewares/sharp"));
+// import resizeImage from './middlewares/sharp';
 var server = (0, express_1.default)();
 server.use((0, morgan_1.default)('tiny'));
 server.use(routes_1.default);
-server.use(sharp_1.default);
+// server.use(resizeImage);
 // server.get('/', (req, res) => {
 //   res.send('yes it works perfectly!');
 // });

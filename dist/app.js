@@ -6,14 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var morgan_1 = __importDefault(require("morgan"));
 var routes_1 = __importDefault(require("./routes"));
-// import resizeImage from './middlewares/sharp';
 var server = (0, express_1.default)();
 server.use((0, morgan_1.default)('tiny'));
+// to serve static files
+server.use('/src', express_1.default.static('src'));
+server.use(express_1.default.json());
 server.use(routes_1.default);
-// server.use(resizeImage);
-// server.get('/', (req, res) => {
-//   res.send('yes it works perfectly!');
-// });
 var port = 3001;
 server.listen(port, function () {
     console.log("server currently listening on port ".concat(port));

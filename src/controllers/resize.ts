@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import express, { Request, Response } from 'express';
 import sharp from 'sharp';
 
 const resizedImgsFolder = path.join('src', 'resizedImages');

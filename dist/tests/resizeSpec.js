@@ -1,27 +1,4 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -62,23 +39,44 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = __importDefault(require("express"));
-var path_1 = __importDefault(require("path"));
-var resize_1 = __importDefault(require("../../controllers/resize"));
-var validationMW = __importStar(require("../../middlewares/validation"));
-var resize = express_1.default.Router();
-resize.get('/resize', validationMW.validateResizeValues, validationMW.validationCheckErrors, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, width, height, filename;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
-            case 0:
-                _a = req.query, width = _a.width, height = _a.height, filename = _a.filename;
-                return [4 /*yield*/, (0, resize_1.default)(filename, Number(width), Number(height))];
-            case 1:
-                _b.sent();
-                res.sendFile(path_1.default.join(__dirname, '..', '..', '..', 'src', 'resizedImages', "resized-".concat(width, "x").concat(height, "-").concat(filename)));
-                return [2 /*return*/];
-        }
-    });
-}); });
-exports.default = resize;
+var supertest_1 = __importDefault(require("supertest"));
+var app_1 = __importDefault(require("../app"));
+var request = (0, supertest_1.default)(app_1.default);
+describe('testing resizing points', function () {
+    it('testing that the resizing route is working', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get('/resize?filename=sunset-glow.jpg&width=500&height=500')];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(200);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it('testing when the width input isnot a number', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get('/resize?filename=sunset-glow.jpg&width=dd&height=500')];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(400);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it('testing when the height input isnot a number', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get('/resize?filename=sunset-glow.jpg&width=400&height=dd')];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(400);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+});

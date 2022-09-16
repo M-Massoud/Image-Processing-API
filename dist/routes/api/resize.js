@@ -64,20 +64,35 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var path_1 = __importDefault(require("path"));
+var fs_1 = __importDefault(require("fs"));
 var resize_1 = __importDefault(require("../../controllers/resize"));
 var validationMW = __importStar(require("../../middlewares/validation"));
 var resize = express_1.default.Router();
 resize.get('/resize', validationMW.validateResizeValues, validationMW.validationCheckErrors, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, width, height, filename;
+    var _a, width, height, filename, imgFileName, imgFilePath, imgExists, err_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
+                _b.trys.push([0, 4, , 5]);
                 _a = req.query, width = _a.width, height = _a.height, filename = _a.filename;
-                return [4 /*yield*/, (0, resize_1.default)(filename, Number(width), Number(height))];
+                imgFileName = "resized-".concat(width, "x").concat(height, "-").concat(filename);
+                imgFilePath = path_1.default.join(__dirname, '..', '..', '..', 'src', 'resizedImages', imgFileName);
+                return [4 /*yield*/, fs_1.default.existsSync(imgFilePath)];
             case 1:
+                imgExists = _b.sent();
+                if (!!imgExists) return [3 /*break*/, 3];
+                return [4 /*yield*/, (0, resize_1.default)(filename, Number(width), Number(height))];
+            case 2:
                 _b.sent();
-                res.sendFile(path_1.default.join(__dirname, '..', '..', '..', 'src', 'resizedImages', "resized-".concat(width, "x").concat(height, "-").concat(filename)));
-                return [2 /*return*/];
+                _b.label = 3;
+            case 3:
+                res.sendFile(imgFilePath);
+                return [3 /*break*/, 5];
+            case 4:
+                err_1 = _b.sent();
+                console.log(err_1);
+                return [3 /*break*/, 5];
+            case 5: return [2 /*return*/];
         }
     });
 }); });

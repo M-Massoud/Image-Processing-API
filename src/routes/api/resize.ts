@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import path from 'path';
+import fs from 'fs';
 import resizeImage from '../../controllers/resize';
 import * as validationMW from '../../middlewares/validation';
 
@@ -10,21 +11,29 @@ resize.get(
   validationMW.validateResizeValues,
   validationMW.validationCheckErrors,
   async (req: Request, res: Response) => {
-    const { width, height, filename } = req.query;
+    try {
+      const { width, height, filename } = req.query;
 
-    await resizeImage(filename as string, Number(width), Number(height));
-
-    res.sendFile(
-      path.join(
+      const imgFileName = `resized-${width}x${height}-${filename}`;
+      const imgFilePath = path.join(
         __dirname,
         '..',
         '..',
         '..',
         'src',
         'resizedImages',
-        `resized-${width}x${height}-${filename}`
-      )
-    );
+        imgFileName
+      );
+      // check if the image already exist
+      const imgExists = await fs.existsSync(imgFilePath);
+      if (!imgExists) {
+        await resizeImage(filename as string, Number(width), Number(height));
+      }
+
+      res.sendFile(imgFilePath);
+    } catch (err) {
+      console.log(err);
+    }
   }
 );
 

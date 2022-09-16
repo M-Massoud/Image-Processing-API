@@ -9,7 +9,7 @@ exports.validateResizeValues = [
 var validationCheckErrors = function (req, res, next) {
     var errors = (0, express_validator_1.validationResult)(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({ errorsFounded: errors.array() });
     }
     next();
 };

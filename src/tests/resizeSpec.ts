@@ -2,6 +2,7 @@ import supertest from 'supertest';
 import server from '../app';
 import fs from 'fs';
 import path from 'path';
+import resizeImage from '../controllers/resize';
 
 const request = supertest(server);
 
@@ -35,5 +36,11 @@ describe('testing resizing end points', () => {
       path.join(resizedImgsFolder, 'resized-400x400-sunset-glow.jpg')
     );
     expect(resizedImgExists).toBe(true);
+  });
+
+  it('testing resize image function', () => {
+    expect(async () => {
+      await resizeImage('sunset-glow.jpg', 400, 400);
+    }).not.toThrow();
   });
 });

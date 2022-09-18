@@ -43,6 +43,7 @@ var supertest_1 = __importDefault(require("supertest"));
 var app_1 = __importDefault(require("../app"));
 var fs_1 = __importDefault(require("fs"));
 var path_1 = __importDefault(require("path"));
+var resize_1 = __importDefault(require("../controllers/resize"));
 var request = (0, supertest_1.default)(app_1.default);
 var resizedImgsFolder = path_1.default.join('src', 'resizedImages');
 describe('testing resizing end points', function () {
@@ -97,4 +98,16 @@ describe('testing resizing end points', function () {
             }
         });
     }); });
+    it('testing resize image function', function () {
+        expect(function () { return __awaiter(void 0, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, (0, resize_1.default)('dfdfdf', 400, 400)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); }).not.toThrow();
+    });
 });

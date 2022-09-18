@@ -10,7 +10,7 @@ resize.get(
   '/resize',
   validationMW.validateResizeValues,
   validationMW.validationCheckErrors,
-  async (req: Request, res: Response) => {
+  async (req: Request, res: Response): Promise<void> => {
     try {
       const { width, height, filename } = req.query;
 

@@ -4,7 +4,11 @@ import sharp from 'sharp';
 
 const resizedImgsFolder = path.join('src', 'resizedImages');
 
-async function resizeImage(imgName: string, width: number, height: number) {
+async function resizeImage(
+  imgName: string,
+  width: number,
+  height: number
+): Promise<void> {
   try {
     // create the resized images folder if it doesn't exist
     try {

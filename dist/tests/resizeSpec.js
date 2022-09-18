@@ -41,8 +41,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var supertest_1 = __importDefault(require("supertest"));
 var app_1 = __importDefault(require("../app"));
+var fs_1 = __importDefault(require("fs"));
+var path_1 = __importDefault(require("path"));
 var request = (0, supertest_1.default)(app_1.default);
-describe('testing resizing points', function () {
+var resizedImgsFolder = path_1.default.join('src', 'resizedImages');
+describe('testing resizing end points', function () {
     it('testing that the resizing route is working', function () { return __awaiter(void 0, void 0, void 0, function () {
         var response;
         return __generator(this, function (_a) {
@@ -75,6 +78,21 @@ describe('testing resizing points', function () {
                 case 1:
                     response = _a.sent();
                     expect(response.status).toBe(400);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it('testing the image processing resized succefully and saved', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var resizedImgExists;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get('/resize?filename=sunset-glow.jpg&width=400&height=400')];
+                case 1:
+                    _a.sent();
+                    return [4 /*yield*/, fs_1.default.existsSync(path_1.default.join(resizedImgsFolder, 'resized-400x400-sunset-glow.jpg'))];
+                case 2:
+                    resizedImgExists = _a.sent();
+                    expect(resizedImgExists).toBe(true);
                     return [2 /*return*/];
             }
         });
